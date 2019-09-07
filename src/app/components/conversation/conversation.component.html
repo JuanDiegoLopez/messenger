@@ -1,0 +1,58 @@
+<div class="conversation-container" [ngClass]="{'shaker': shake}">
+  <div class="container" *ngIf="friend && user">
+    <div class="row">
+      <div class="col-lg-2 col-md-3 col-sm-5">
+        <div class="avatar-frame-online">
+          <img class="conversation-picture" [src]="friend.avatar || 'assets/img/generic_avatar.png'" alt="Avatar">
+        </div>
+      </div>
+      <div class="col-lg-10 col-md-9 col-sm-7">
+        <h2>{{ friend.nick }}<small>({{ friend.status }})</small></h2>
+        <h5>{{ friend.subnick }}</h5>
+        <hr>
+        <div #scrollBox class="conversation-box" [scrollTop]="scrollBox.scrollHeight">
+          <div class="message-group" *ngFor="let message of conversation">
+            <div *ngIf="message.type == 'text'" class="message" [ngClass]="user.uid == message.sender ? 'me-message' : 'friend-message'">{{ message.text }}</div>
+            <div *ngIf="message.type == 'zumbido'" class="message" [ngClass]="user.uid == message.sender ? 'me-message' : 'friend-message'">{{ zumbidoText(message) }}</div>
+            <div *ngIf="message.type == 'image'" class="message" [ngClass]="user.uid == message.sender ? 'me-message' : 'friend-message'"><img src="{{message.text}}" alt="Imagen"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row marto15">
+      <div class="col-lg-2 col-md-3 col-sm-5">
+        <div class="avatar-frame-online">
+          <img class="conversation-picture img-fluid" [src]="user.avatar || 'assets/img/generic_avatar.png'" alt="Avatar">
+        </div>
+      </div>
+      <div class="col-lg-10 col-md-9 col-sm-7">
+        <textarea [(ngModel)]="textMessage"  (keyup.enter)="sendMessage()" class="form-control" rows="3"></textarea>
+        <div class="row conversation-buttons">
+          <div class="col-xs-auto">
+            <img (click)="sendZumbido()" class="conversation-icon" src="assets/img/zumbido.png" alt="zumbido">
+          </div>
+          <div class="col">
+            <label class="custom-file-upload">
+              <input #inputImage type="file" (change)="fileChangeEvent($event)">
+              Enviar imagen
+            </label>
+          </div>
+        </div>
+        <div class="modal" *ngIf="showModal">
+          <div class="modal-content">
+            <span (click)="closeModal()" class="close">&times;</span>
+            <image-cropper
+              [imageChangedEvent]="imageChangedEvent"
+              [maintainAspectRatio]="true"
+              [aspectRatio]="1 / 1"
+              [resizeToWidth]="128"
+              format="png"
+              (imageCroppedBase64)="imageCropped($event)"
+            ></image-cropper>
+            <button (click)="sendImage()" *ngIf="croppedImage" type="button "class="btn btn-primary btn-block">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

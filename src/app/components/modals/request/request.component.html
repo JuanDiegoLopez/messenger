@@ -1,0 +1,41 @@
+<div class="modal-dialog" *ngIf="user">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Nueva solicitud de amistad</h5>
+      <button (click)="close()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" style="height:auto">
+      <div class="row">
+        <div class="col-lg-4 col-sm-3">
+          <div class="avatar-frame-online">
+              <img [src]="user.avatar || 'assets/img/generic_avatar.png'" alt="Avatar" class="img-fluid">
+          </div>
+        </div>
+        <div class="col-lg-8 col-sm-9">
+          <b>{{ user.nick }}</b>
+          <br>
+          <small>{{ user.email }}</small>
+          <br>
+          <small>Te ha enviado una solicitud de amistad</small>
+          <p>{{ currentRequest.message }}</p>
+        </div>
+        <hr>
+        <div class="col-sm-12 marto15">
+          <h4>Deseas agregar a esta persona?</h4>
+          <input type="radio" name="addToMsn" [(ngModel)]="shouldAdd" value="yes" id="add-yes">
+          <label for="add-yes">&nbsp; Sí quiero agregarlo</label> <br>
+          <input type="radio" name="addToMsn" [(ngModel)]="shouldAdd" value="no" id="add-no">
+          <label for="add-no">&nbsp; No quiero agregarlo</label> <br>
+          <input type="radio" name="addToMsn" [(ngModel)]="shouldAdd" value="later" id="add-later">
+          <label for="add-later">&nbsp; Mirar mas tarde</label> <br>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn" (click)="close()">Cerrar</button>
+      <button type="button" class="btn btn-primary" (click)="accept()">Aceptar</button>
+    </div>
+  </div>
+</div>
